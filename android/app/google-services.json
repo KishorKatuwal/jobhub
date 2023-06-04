@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "169559773567",
+    "project_id": "wcclonebackend",
+    "storage_bucket": "wcclonebackend.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:169559773567:android:2747fc9b9e3ab6cb4b4a4a",
+        "android_client_info": {
+          "package_name": "com.dbestech.jobhub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "169559773567-sjf066cjf0rp5qbdcvbhjvv4oqj7b4lv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNy2lXdfj-ydzWy4zSmGPY0dEUdMgDN3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "169559773567-sjf066cjf0rp5qbdcvbhjvv4oqj7b4lv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "169559773567-bo72ic31b8fg8mgvjtnkqoo9acgspuh0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.waClone"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:169559773567:android:60c99684b8f80e5f4b4a4a",
+        "android_client_info": {
+          "package_name": "com.example.wa_clone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "169559773567-1ghe1u3rvvbejvcaqeqn18dfqprglcd8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.wa_clone",
+            "certificate_hash": "0ef555ca82fe04181021da823caf6ddfc76b12f8"
+          }
+        },
+        {
+          "client_id": "169559773567-sjf066cjf0rp5qbdcvbhjvv4oqj7b4lv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNy2lXdfj-ydzWy4zSmGPY0dEUdMgDN3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "169559773567-sjf066cjf0rp5qbdcvbhjvv4oqj7b4lv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "169559773567-bo72ic31b8fg8mgvjtnkqoo9acgspuh0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.waClone"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
