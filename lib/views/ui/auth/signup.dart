@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jobhub/models/request/auth/signup_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/app_constants.dart';
@@ -108,7 +109,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 hintText: "Password",
                 keyboardType: TextInputType.text,
                 validator: (password) {
-                  if (signupNotifier.passwordValidator(password ?? '')) {
+                  if (password!.isEmpty || password!.length<6) {
                     return "Please enter a valid password!!";
                   }
                   return null;
@@ -135,7 +136,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     Get.to(() => const LoginPage());
                   },
                   child: ReusableText(
-                    text: "Login",
+                    text: "Login",//2:10:50
                     style: appstyle(
                       14,
                       Color(kDark.value),
@@ -149,6 +150,22 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 text: "Sign Up",
                 onTap: () {
                   loginNotifier.firstTime = !loginNotifier.firstTime;
+                  if (email!.text.isNotEmpty || password!.text.isEmpty || name! != null ) {
+                    SignupModel model = SignupModel(
+                        username: name.text,
+                        email: email.text,
+                        password: password.text);
+
+                    signupNotifier.signUpUser(model);
+                  } else {
+                    Get.snackbar(
+                      "Signup Failed",
+                      "Please Check your credentials",
+                      colorText: Color(kLight.value),
+                      backgroundColor: Colors.red,
+                      icon: const Icon(Icons.add_alert),
+                    );
+                  }
                 },
               ),
             ],

@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
 import 'package:http/http.dart' as https;
 import 'package:jobhub/models/request/auth/login_model.dart';
+import 'package:jobhub/models/request/auth/profile_update_model.dart';
+import 'package:jobhub/models/request/auth/signup_model.dart';
 import 'package:jobhub/models/response/auth/login_res_model.dart';
 import 'package:jobhub/services/config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,16 +12,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthHelper {
   static var client = https.Client();
 
+  //login method
   static Future<bool> login(LoginModel loginModel) async {
     try {
       Map<String, String> requestHeaders = {
         'Content-Type': 'application/json; charset=UTF-8'
       };
-      // var url = Uri.https(Config.apiUrl, Config.loginUrl);
-      var uri = Uri.http(Config.mobileUrl,Config.loginUrl);
+      // var url = Uri.http(Config.apiUrl, Config.loginUrl);
+      var url = Uri.http(Config.apiUrl,Config.loginUrl);
       var response = await client.post(
-        // url,
-        uri,
+        url,
         headers: requestHeaders,
         body: jsonEncode(loginModel),
       );
@@ -41,4 +44,67 @@ class AuthHelper {
       return false;
     }
   }
+
+  //sign up method
+  static Future<bool> signUp(SignupModel signupModel) async {
+    try {
+      Map<String, String> requestHeaders = {
+        'Content-Type': 'application/json; charset=UTF-8'
+      };
+      // var url = Uri.http(Config.apiUrl, Config.loginUrl);
+      var url = Uri.http(Config.apiUrl,Config.signupUrl);
+      var response = await client.post(
+        url,
+        headers: requestHeaders,
+        body: jsonEncode(signupModel),
+      );
+      if (response.statusCode == 201) {
+        return true;
+      } else {
+        print("reached here  3 ${response.statusCode}");
+        return false;
+      }
+    } catch (err) {
+      print(err.toString());
+      return false;
+    }
+  }
+
+
+  //update profile
+  static Future<bool> updateProfile(ProfileUpdateReq profileModel) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString("token");
+      print(token);
+      Map<String, String> requestHeaders = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'token': 'Bearer $token',
+      };
+      // var url = Uri.http(Config.apiUrl, Config.loginUrl);
+      var url = Uri.http(Config.apiUrl,Config.profileUrl);
+      var response = await client.put(
+        url,
+        headers: requestHeaders,
+        body: jsonEncode(profileModel),
+      );
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (err) {
+      print(err.toString());
+      return false;
+    }
+  }
+
+
+
+
+
+
+
+
+//last line
 }
