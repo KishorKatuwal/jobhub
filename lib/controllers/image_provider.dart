@@ -13,6 +13,8 @@ class ImageUploader extends ChangeNotifier {
 
   List<String> imageUrl = [];
 
+  String? imageData;
+
   void pickImage() async {
     // ignore: no_leading_underscores_for_local_identifiers
     XFile? _imageFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -78,6 +80,7 @@ class ImageUploader extends ChangeNotifier {
     await ref.putFile(image);
     // imageUrl = (await ref.getDownloadURL());
     imageUrl = [(await ref.getDownloadURL())];
+    imageData = (await ref.getDownloadURL());
     print (imageUrl);
     return imageUrl;
   }

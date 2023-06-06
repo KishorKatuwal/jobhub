@@ -221,7 +221,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                               ProfileUpdateReq model = ProfileUpdateReq(
                                 location: location.text,
                                 phone: phone.text,
-                                profile: imageUploader.imageUrl.toString(),
+                                profile: imageUploader.imageData.toString(),
                                 skills: [
                                   skill0.text,
                                   skill1.text,
