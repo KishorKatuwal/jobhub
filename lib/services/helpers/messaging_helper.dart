@@ -3,18 +3,15 @@ import 'dart:convert';
 import 'package:http/http.dart' as https;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../models/request/chat/create_chat.dart';
-import '../../models/response/chat/get_chat.dart';
-import '../../models/response/chat/initial_message.dart';
+import '../../models/request/messaging/send_message.dart';
+import '../../models/response/messaging/messaging_res.dart';
 import '../config.dart';
 
-class ChatHelper {
+class MessagingHelper {
   static var client = https.Client();
 
-
-
-  //Apply for a JOB
-  static Future<List<dynamic>> apply(CreateChat model) async {
+  //send Message
+  static Future<List<dynamic>> sendMessage(SendMessage model) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString("token");
@@ -23,16 +20,19 @@ class ChatHelper {
         'token': 'Bearer $token',
       };
       // var url = Uri.http(Config.apiUrl, Config.loginUrl);
-      var url = Uri.http(Config.apiUrl, Config.chatsUrl);
-      var response = await client.post(
-        url,
-        headers: requestHeaders,
-        body: jsonEncode(model.toJson())
-      );
+      var url = Uri.http(Config.apiUrl, Config.messageUrl);
+      var response = await client.post(url,
+          headers: requestHeaders, body: jsonEncode(model.toJson()));
+      print(response.statusCode);
+      print(response.statusCode);
+      print(response.statusCode);
       if (response.statusCode == 200) {
-        var first = initialChatFromJson(response.body).id;
-        return [true, first];
+        ReceivedMessage message =
+            ReceivedMessage.fromJson(jsonDecode(response.body));
+        Map<String, dynamic> responseMap = jsonDecode(response.body);
+        return [true, message, responseMap];
       } else {
+        print(response.statusCode);
         return [false];
       }
     } catch (err) {
@@ -40,12 +40,9 @@ class ChatHelper {
     }
   }
 
-
-
-
-
-//getting conversations
-  static Future<List<GetChats>> getConversations() async {
+//get Messages
+  static Future<List<ReceivedMessage>> getMessages(
+      String chatId, int offset) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString("token");
@@ -54,27 +51,23 @@ class ChatHelper {
         'token': 'Bearer $token',
       };
       // var url = Uri.http(Config.apiUrl, Config.loginUrl);
-      var url = Uri.http(Config.apiUrl, Config.chatsUrl);
+      var url = Uri.http(Config.apiUrl, "${Config.messageUrl}/$chatId", {"page": offset.toString()});
       var response = await client.get(
-          url,
-          headers: requestHeaders
+        url,
+        headers: requestHeaders,
       );
       if (response.statusCode == 200) {
-        var chats = getChatsFromJson(response.body);
-        return chats;
+        var messages = receivedMessageFromJson(response.body);
+        return messages;
       } else {
         print(response.statusCode);
-        throw Exception("Failed to get conversations");
+        // return false;
+        throw Exception("Failed to load messages");
       }
     } catch (err) {
       throw Exception(err.toString());
     }
   }
-
-
-
-
-
 
 
 //last

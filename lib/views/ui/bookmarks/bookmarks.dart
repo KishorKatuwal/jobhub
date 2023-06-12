@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jobhub/controllers/bookmark_provider.dart';
+import 'package:jobhub/models/response/bookmarks/all_bookmarks.dart';
+import 'package:jobhub/views/ui/bookmarks/widgets/bookmark_widget.dart';
+import 'package:jobhub/views/ui/search/searchpage.dart';
+import 'package:provider/provider.dart';
 
 import '../../common/app_bar.dart';
 import '../../common/drawer/drawer_widget.dart';
@@ -17,7 +22,7 @@ class _BookMarkPageState extends State<BookMarkPage> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.h),
-        child:  CustomAppBar(
+        child: CustomAppBar(
           text: "Bookmark",
           child: Padding(
             padding: EdgeInsets.all(12.h),
@@ -25,6 +30,30 @@ class _BookMarkPageState extends State<BookMarkPage> {
           ),
         ),
       ),
+      body: Consumer<BookMarkNotifier>(
+          builder: (context, bookmarkNotifier, child) {
+        bookmarkNotifier.getBookmarks();
+        return FutureBuilder<List<AllBookmark>>(
+          future: bookmarkNotifier.bookmarks,
+            builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Text("Error ${snapshot.error}");
+          } else if (snapshot.data!.isEmpty) {
+            return const SearchLoading(text: "No Bookmarked jobs found");
+          } else {
+            final bookmark = snapshot.data;
+            return ListView.builder(
+                itemCount: bookmark!.length,
+                itemBuilder: (context, index) {
+                  return BookMarkWidget(jobs: bookmark[index],);
+                });
+          }
+        });
+      }),
     );
   }
 }

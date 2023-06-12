@@ -3,15 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
+import 'package:jobhub/controllers/bookmark_provider.dart';
+import 'package:jobhub/models/request/chat/create_chat.dart';
+import 'package:jobhub/models/request/messaging/send_message.dart';
+import 'package:jobhub/services/helpers/chat_helper.dart';
 import 'package:jobhub/views/common/app_bar.dart';
 import 'package:jobhub/views/common/custom_outline_btn.dart';
 import 'package:jobhub/views/common/exports.dart';
 import 'package:jobhub/views/common/height_spacer.dart';
-import 'package:jobhub/views/ui/jobs/widgets/horizontal_shimmer.dart';
+import 'package:jobhub/views/ui/mainscreen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controllers/jobs_provider.dart';
-import '../../common/vertical_shimmer.dart';
+import '../../../models/request/bookmarks/bookmark_sending_model.dart';
+import '../../../services/helpers/messaging_helper.dart';
 
 class JobPage extends StatefulWidget {
   final String title;
@@ -37,11 +42,31 @@ class _JobPageState extends State<JobPage> {
           preferredSize: Size.fromHeight(50.h),
           child: CustomAppBar(
             text: widget.title,
-            actions: const [
-              Padding(
-                padding: EdgeInsets.only(right: 12.0),
-                child: Icon(Entypo.bookmark),
-              )
+            actions: [
+              Consumer<BookMarkNotifier>(
+                  builder: (context, bookmarkNotifier, child) {
+                bookmarkNotifier.loadJobs();
+                print(bookmarkNotifier.jobs);
+                return GestureDetector(
+                  onTap: () {
+                    if (bookmarkNotifier.jobs.contains(widget.id)) {
+                      //delete bookmark
+                      bookmarkNotifier.deleteBookmark(widget.id);
+                    } else {
+                      BookmarkSendingModel model = BookmarkSendingModel(
+                        job: widget.id,
+                      );
+                      bookmarkNotifier.addBookmark(model, widget.id);
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 12.0),
+                    child: !bookmarkNotifier.jobs.contains(widget.id)
+                        ? const Icon(Fontisto.bookmark)
+                        : const Icon(Fontisto.bookmark_alt),
+                  ),
+                );
+              })
             ],
             child: GestureDetector(
               onTap: () => Get.back(),
@@ -75,7 +100,7 @@ class _JobPageState extends State<JobPage> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                 CircleAvatar(
+                                CircleAvatar(
                                   backgroundImage:
                                       NetworkImage(jobData!.imageUrl),
                                 ),
@@ -103,7 +128,8 @@ class _JobPageState extends State<JobPage> {
                                     horizontal: 50,
                                   ),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       CustomOutlineBtn(
                                         text: "Full-time",
@@ -197,7 +223,27 @@ class _JobPageState extends State<JobPage> {
                         child: Padding(
                           padding: EdgeInsets.only(bottom: 20.h),
                           child: CustomOutlineBtn(
-                            onTap: () {},
+                            onTap: () {
+                              print("tapped");
+                              CreateChat model =
+                                  CreateChat(userId: jobData.agentId);
+
+                              ChatHelper.apply(model).then((response) {
+                                if (response[0]) {
+                                  SendMessage model = SendMessage(
+                                      content:
+                                          "Hello, I'm interested in ${jobData.title} job in ${jobData.location}",
+                                      chatId: response[1],
+                                      receiver: jobData.agentId);
+                                  print(model.content);
+                                  print(model.chatId);
+                                  print(model.receiver);
+                                  MessagingHelper.sendMessage(model).whenComplete((){
+                                    Get.to(()=>const MainScreen());
+                                 });
+                                }
+                              });
+                            },
                             text: "Apply Now",
                             color2: Color(kOrange.value),
                             width: width,

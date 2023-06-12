@@ -12,6 +12,7 @@ import 'package:jobhub/views/ui/homepage.dart';
 import 'package:provider/provider.dart';
 
 import '../common/drawer/drawerScreen.dart';
+import 'chat/chat_list.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -46,7 +47,7 @@ class _MainScreenState extends State<MainScreen> {
       case 0:
         return const HomePage();
       case 1:
-        return const ChatsPage();
+        return const ChatList();
       case 2:
         return const BookMarkPage();
       case 3:

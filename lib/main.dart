@@ -10,6 +10,7 @@ import 'package:jobhub/views/ui/onboarding/onboarding_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'controllers/chat_provider.dart';
 import 'firebase_options.dart';
 import 'views/common/exports.dart';
 
@@ -41,6 +42,7 @@ void main() async {
     ChangeNotifierProvider(create: (context) => BookMarkNotifier()),
     ChangeNotifierProvider(create: (context) => ImageUploader()),
     ChangeNotifierProvider(create: (context) => ProfileNotifier()),
+    ChangeNotifierProvider(create: (context) => ChatNotifier()),
   ], child: const MyApp()));
 }
 
@@ -73,4 +75,4 @@ class MyApp extends StatelessWidget {
   }
 }
 
-//3:36:56
+//2:29:06
