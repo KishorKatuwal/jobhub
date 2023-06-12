@@ -19,8 +19,8 @@ class AuthHelper {
       Map<String, String> requestHeaders = {
         'Content-Type': 'application/json; charset=UTF-8'
       };
-      // var url = Uri.http(Config.apiUrl, Config.loginUrl);
-      var url = Uri.http(Config.apiUrl,Config.loginUrl);
+      // var url = Uri.https(Config.apiUrl, Config.loginUrl);
+      var url = Uri.https(Config.apiUrl,Config.loginUrl);
       var response = await client.post(
         url,
         headers: requestHeaders,
@@ -52,8 +52,8 @@ class AuthHelper {
       Map<String, String> requestHeaders = {
         'Content-Type': 'application/json; charset=UTF-8'
       };
-      // var url = Uri.http(Config.apiUrl, Config.loginUrl);
-      var url = Uri.http(Config.apiUrl,Config.signupUrl);
+      // var url = Uri.https(Config.apiUrl, Config.loginUrl);
+      var url = Uri.https(Config.apiUrl,Config.signupUrl);
       var response = await client.post(
         url,
         headers: requestHeaders,
@@ -82,8 +82,8 @@ class AuthHelper {
         'Content-Type': 'application/json; charset=UTF-8',
         'token': 'Bearer $token',
       };
-      // var url = Uri.http(Config.apiUrl, Config.loginUrl);
-      var url = Uri.http(Config.apiUrl,Config.profileUrl);
+      // var url = Uri.https(Config.apiUrl, Config.loginUrl);
+      var url = Uri.https(Config.apiUrl,Config.profileUrl);
       var response = await client.put(
         url,
         headers: requestHeaders,
@@ -110,8 +110,8 @@ class AuthHelper {
         'Content-Type': 'application/json; charset=UTF-8',
         'token': 'Bearer $token',
       };
-      // var url = Uri.http(Config.apiUrl, Config.loginUrl);
-      var url = Uri.http(Config.apiUrl,Config.profileUrl);
+      // var url = Uri.https(Config.apiUrl, Config.loginUrl);
+      var url = Uri.https(Config.apiUrl,Config.profileUrl);
       var response = await client.get(
         url,
         headers: requestHeaders,
